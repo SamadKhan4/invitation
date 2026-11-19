@@ -1,19 +1,24 @@
-// Customize the site here. Dates must include timezone offset for accurate countdowns.
+// Include the timezone offset so the countdown stays correct in every country.
 export const wedding = {
-  partner1: 'Veer',
-  partner2: 'Zara',
-  tagline: 'Two hearts, one beautiful beginning',
-  date: '2027-02-14T17:00:00+05:30',
-  dateLabel: 'Sunday, 14 February 2027',
-  location: 'The Taj Mahal Palace, Mumbai',
-  address: 'Apollo Bandar, Colaba, Mumbai, Maharashtra, India',
-  mapUrl: 'https://www.google.com/maps/search/?api=1&query=The+Taj+Mahal+Palace+Mumbai',
-  contactEmail: 'hello@example.com',
-  flowersPhoto: `${import.meta.env.BASE_URL}ceremony-flowers.webp`,
+  partner1: 'Upasana',
+  partner2: 'Rutvik',
+  bride: 'Dr. Upasana Patil',
+  groom: 'Dr. Rutvik Kalasa',
+  hosts: 'Mrs. Pragati and Mr. Shuddhodhan Patil',
+  groomParents: 'Son of Smt. Kiranben and Shri Kishorbhai Kalasa',
+  invocation: '॥ श्री गणेशाय नमः ॥',
+  invitationAccent: 'સ્નેહભર્યું આમંત્રણ',
+  welcomeAccent: 'બે હૃદય, બે પરિવાર',
+  celebrationAccent: 'શુભ લગ્નોત્સવ',
+  farewellAccent: 'आपकी उपस्थिति और आशीर्वाद की प्रतीक्षा में',
+  date: '2027-01-27T18:00:00+05:30',
+  dateLabel: 'Wednesday, 27 January 2027',
+  timeLabel: '6:00 PM sharp',
+  location: 'Ghotra Palace',
+  address: 'Kamptee Road, near Raj Royal Lawns, Nagpur',
+  mapUrl: 'https://www.google.com/maps/search/?api=1&query=Ghotra+Palace+Kamptee+Road+near+Raj+Royal+Lawns+Nagpur',
   events: [
-    { time: '10:00 AM', name: 'Haldi Ceremony', detail: 'A morning full of sunshine, color & laughter' },
-    { time: '12:30 PM', name: 'Mehendi & Lunch', detail: 'Music, memories & beautiful traditions' },
-    { time: '05:00 PM', name: 'Wedding Ceremony', detail: 'The moment our forever begins' },
-    { time: '08:00 PM', name: 'Dinner & Celebration', detail: 'Good food, dancing & a little magic' }
+    { time: 'Wednesday, 27 January 2027', name: 'Wedding Ceremony', detail: '6:00 PM sharp' },
+    { name: 'Dinner', detail: 'Dinner will be served immediately after the ceremony.' }
   ]
 };
