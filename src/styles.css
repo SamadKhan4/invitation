@@ -32,6 +32,22 @@ img { display: block; max-width: 100%; }
 }
 main:focus { outline: none; }
 
+.music-toggle {
+  position: fixed;
+  z-index: 1;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  right: max(14px, env(safe-area-inset-right), calc((100% - 520px) / 2 + 14px));
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #b98339;
+  border-radius: 50%;
+  color: var(--rose);
+  background: var(--paper);
+  box-shadow: 0 3px 12px #754b2638;
+}
+
 .palace-gate {
   position: fixed;
   z-index: 2;

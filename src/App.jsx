@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CalendarDays, Drum, Flower2, Gift, Heart, MapPin, Utensils } from 'lucide-react';
+import { CalendarDays, Drum, Flower2, Gift, Heart, MapPin, Utensils, Volume2, VolumeX } from 'lucide-react';
 import { wedding } from './config';
 import entranceVideo from '../hero-silent.mp4?url';
+import weddingSong from '../song.mpeg?url';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -336,12 +337,23 @@ function MessageForm() {
 export default function App() {
   const [phase, setPhase] = useState('closed');
   const invitation = useRef(null);
+  const music = useRef(null);
+  const [musicPlaying, setMusicPlaying] = useState(false);
   const [loadVideo, setLoadVideo] = useState(false);
 
   function openGate() {
+    music.current.play().catch(() => setMusicPlaying(false));
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setLoadVideo(!reducedMotion);
     setPhase(reducedMotion ? 'open' : 'opening');
+  }
+
+  function toggleMusic() {
+    if (music.current.paused) {
+      music.current.play().catch(() => setMusicPlaying(false));
+    } else {
+      music.current.pause();
+    }
   }
 
   useEffect(() => {
@@ -377,6 +389,18 @@ export default function App() {
 
   return (
     <div className={`invitation ${phase === 'open' ? 'invitation--open' : ''}`}>
+      <audio ref={music} loop preload="none"
+        onPlaying={() => setMusicPlaying(true)}
+        onPause={() => setMusicPlaying(false)}
+        onError={() => setMusicPlaying(false)}>
+        <source src={weddingSong} type="audio/mpeg" />
+      </audio>
+      {phase === 'open' && (
+        <button type="button" className="music-toggle" onClick={toggleMusic}
+          aria-label={musicPlaying ? 'Pause wedding music' : 'Play wedding music'}>
+          {musicPlaying ? <Volume2 size={20} aria-hidden="true" /> : <VolumeX size={20} aria-hidden="true" />}
+        </button>
+      )}
       <main ref={invitation} tabIndex={-1} inert={phase === 'open' ? undefined : ''}>
         <Cover playing={phase === 'open'} loadVideo={loadVideo} />
         {phase === 'open' && <Petals className="entrance-petals" />}
