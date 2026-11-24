@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CalendarDays, ChevronDown, Gift, Heart, MapPin, Utensils } from 'lucide-react';
+import { CalendarDays, Drum, Flower2, Gift, Heart, MapPin, Utensils } from 'lucide-react';
 import { wedding } from './config';
 import entranceVideo from '../hero-silent.mp4?url';
 
@@ -37,7 +37,6 @@ function PalaceGate({ opening, onOpen }) {
 function Cover({ playing, loadVideo }) {
   const video = useRef(null);
   const [videoFailed, setVideoFailed] = useState(false);
-  const [paperFrame, setPaperFrame] = useState(false);
   const showVideo = loadVideo && !videoFailed;
 
   useEffect(() => {
@@ -46,7 +45,7 @@ function Cover({ playing, loadVideo }) {
   }, [playing, showVideo]);
 
   return (
-    <header className={`cover ${showVideo ? 'cover--video' : ''} ${paperFrame ? 'cover--paper-frame' : ''}`} aria-label="Wedding invitation">
+    <header className="cover" aria-label="Wedding invitation">
       <div className="cover-scene" aria-hidden="true">
         {showVideo && (
           <video
@@ -58,20 +57,18 @@ function Cover({ playing, loadVideo }) {
             playsInline
             muted
             onError={() => setVideoFailed(true)}
-            onTimeUpdate={event => setPaperFrame(event.currentTarget.currentTime >= 8.1)}
           />
         )}
       </div>
       <div className="cover-copy">
-        <span className="cover-fleur" aria-hidden="true">❦</span>
-        <p className="invocation" lang="hi">{wedding.invocation}</p>
-        <p className="section-accent" lang="gu">{wedding.invitationAccent}</p>
+        <p className="invocation">॥ Shree Ganeshaya Namah ॥</p>
         <p className="dedication">With the divine blessings of the Almighty and in loving memory of our beloved grandparents</p>
         <div className="divider" aria-hidden="true"><span>✦</span></div>
-        <p className="hosts"><strong>{wedding.hosts}</strong><br />cordially invite you to the joyous and auspicious occasion of the wedding ceremony of our beloved daughter</p>
+        <p className="hosts"><strong>{wedding.hosts}</strong><br />cordially invite you to the wedding ceremony<br />of our beloved daughter</p>
+        <div className="divider" aria-hidden="true"><span>✦</span></div>
         <h1><span>{wedding.bride}</span><i>&amp;</i><span>{wedding.groom}</span></h1>
         <p className="groom-parents">{wedding.groomParents}</p>
-        <a className="scroll-cue" href="#celebrations">Wedding details <ChevronDown size={16} aria-hidden="true" /></a>
+        <div className="divider" aria-hidden="true"><span>✦</span></div>
       </div>
     </header>
   );
@@ -228,23 +225,26 @@ function Countdown() {
   );
 }
 
+const eventIcons = { mehndi: Flower2, sangeet: Drum, wedding: CalendarDays, dinner: Utensils };
+
 function Timeline() {
   return (
     <section className="section celebrations" id="celebrations">
       <Heading accent={wedding.celebrationAccent} lang="gu">Wedding Celebrations</Heading>
       <ol className="timeline">
-        {wedding.events.map((event, index) => (
-          <li key={event.name}>
-            {index === 0
-              ? <CalendarDays size={27} strokeWidth={1.35} aria-hidden="true" />
-              : <Utensils size={27} strokeWidth={1.35} aria-hidden="true" />}
-            <div>
-              <h3>{event.name}</h3>
-              {event.time && <time dateTime={wedding.date}>{event.time}</time>}
-              <p>{event.detail}</p>
-            </div>
-          </li>
-        ))}
+        {wedding.events.map(event => {
+          const Icon = eventIcons[event.id];
+          return (
+            <li key={event.id}>
+              <Icon size={27} strokeWidth={1.35} aria-hidden="true" />
+              <div>
+                <h3>{event.name}</h3>
+                {event.dateTime && <time dateTime={event.dateTime}>{event.dateLabel}</time>}
+                <p>{event.detail}</p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
     </section>
   );
@@ -256,12 +256,12 @@ function EventDetails() {
     const event = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Upasana and Rutvik//Wedding Invitation//EN',
+      `PRODID:-//${wedding.partner1} and ${wedding.partner2}//Wedding Invitation//EN`,
       'BEGIN:VEVENT',
       'UID:20270127-upasana-rutvik@wedding-invitation',
       `DTSTAMP:${calendarDate(new Date())}`,
       `DTSTART:${calendarDate(new Date(wedding.date))}`,
-      'SUMMARY:Wedding of Upasana and Rutvik',
+      `SUMMARY:Wedding of ${wedding.partner1} and ${wedding.partner2}`,
       `LOCATION:${[wedding.location, ...wedding.address.split(', ')].join('\\, ')}`,
       'END:VEVENT',
       'END:VCALENDAR',

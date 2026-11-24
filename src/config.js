@@ -1,13 +1,11 @@
 // Include the timezone offset so the countdown stays correct in every country.
 export const wedding = {
-  partner1: 'Upasana',
+  partner1: 'Upasna',
   partner2: 'Rutvik',
-  bride: 'Dr. Upasana Patil',
-  groom: 'Dr. Rutvik Kalasa',
-  hosts: 'Mrs. Pragati and Mr. Shuddhodhan Patil',
-  groomParents: 'Son of Smt. Kiranben and Shri Kishorbhai Kalasa',
-  invocation: '॥ श्री गणेशाय नमः ॥',
-  invitationAccent: 'સ્નેહભર્યું આમંત્રણ',
+  bride: 'Dr. Upasna Patil',
+  groom: 'Dr. Rutvik Kalas',
+  hosts: 'Mrs. Pragati & Mr. Shuddhodhan Patil',
+  groomParents: 'S/o Smt. Kiranben and Shri Kishorbhai Kalas',
   welcomeAccent: 'બે હૃદય, બે પરિવાર',
   celebrationAccent: 'શુભ લગ્નોત્સવ',
   farewellAccent: 'आपकी उपस्थिति और आशीर्वाद की प्रतीक्षा में',
@@ -18,7 +16,9 @@ export const wedding = {
   address: 'Kamptee Road, near Raj Royal Lawns, Nagpur',
   mapUrl: 'https://www.google.com/maps/search/?api=1&query=Ghotra+Palace+Kamptee+Road+near+Raj+Royal+Lawns+Nagpur',
   events: [
-    { time: 'Wednesday, 27 January 2027', name: 'Wedding Ceremony', detail: '6:00 PM sharp' },
-    { name: 'Dinner', detail: 'Dinner will be served immediately after the ceremony.' }
+    { id: 'mehndi', name: 'Mehndi', dateTime: '2027-01-26T11:00:00+05:30', dateLabel: 'Tuesday, 26 January 2027', detail: '11:00 AM' },
+    { id: 'sangeet', name: 'Sangeet', dateTime: '2027-01-26T19:00:00+05:30', dateLabel: 'Tuesday, 26 January 2027', detail: '7:00 PM' },
+    { id: 'wedding', name: 'Wedding Ceremony', dateTime: '2027-01-27T18:00:00+05:30', dateLabel: 'Wednesday, 27 January 2027', detail: '6:00 PM sharp' },
+    { id: 'dinner', name: 'Dinner', detail: 'Dinner will be served immediately after the ceremony.' }
   ]
 };

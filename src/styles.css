@@ -111,9 +111,10 @@ main:focus { outline: none; }
   position: relative;
   isolation: isolate;
   display: grid;
-  place-items: center;
+  justify-items: center;
+  align-content: center;
   min-height: 100svh;
-  padding: 30px clamp(13px, 4vw, 30px) clamp(115px, 30vw, 170px);
+  padding: clamp(45px, 12svh, 105px) 9% clamp(110px, 28svh, 245px);
   text-align: center;
   background: var(--welcome-surface);
 }
@@ -123,7 +124,7 @@ main:focus { outline: none; }
   inset: 0;
   overflow: hidden;
   background: #fbefda url('/invitation-paper.webp') center / cover no-repeat;
-  mask-image: linear-gradient(to bottom, #000 calc(100% - clamp(105px, 28vw, 160px)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 96%, transparent);
 }
 .cover-video {
   position: absolute;
@@ -132,28 +133,26 @@ main:focus { outline: none; }
   height: 100%;
   object-fit: cover;
 }
-.cover--video .cover-scene::after {
+.cover-copy {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 390px);
+  padding: 6px clamp(6px, 2vw, 12px);
+  color: #43271c;
+}
+.cover-copy::before {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #240e08a8, #240e087d 46%, #240e08b8);
+  z-index: -1;
+  inset: -8% -4%;
+  background: #fff3deeb;
+  mask-image: radial-gradient(ellipse farthest-corner, #000 55%, transparent 79%);
   content: '';
 }
-.cover--video:not(.cover--paper-frame) {
-  --cover-heading: #fff4de;
-  --cover-accent: #ffe0a0;
-  color: #fff5e7;
-  text-shadow: 0 2px 5px #200b07, 0 0 16px #200b07;
+.cover .divider {
+  width: clamp(70px, 28%, 105px);
+  margin: 12px auto;
+  color: var(--cover-accent);
 }
-.cover--video.cover--paper-frame .cover-scene::after {
-  opacity: 0;
-  transition: opacity .22s ease;
-}
-
-.cover-copy {
-  width: min(100%, 405px);
-  padding: clamp(17px, 5vw, 27px) clamp(10px, 3.5vw, 20px);
-}
-.cover .divider { color: var(--cover-accent); }
 .invitation:not(.invitation--open) .cover-copy { visibility: hidden; }
 .invitation--open .cover-copy > * { animation: invitation-reveal 1.55s 1s ease-in-out both; }
 .invitation--open .cover-copy > :nth-child(n + 3) { animation-delay: 1.15s; }
@@ -163,36 +162,22 @@ main:focus { outline: none; }
   from { visibility: hidden; opacity: 0; }
   to { visibility: visible; opacity: 1; }
 }
-.cover-fleur { color: var(--cover-accent); font-size: 34px; line-height: 1; }
-.cover-copy p { margin: 12px 0; font-size: 19px; line-height: 1.28; }
-.cover-copy .invocation { margin-top: 6px; font-weight: 600; color: var(--cover-heading); }
-.cover-copy .dedication { font-style: italic; margin-top: 22px; }
-.cover-copy .hosts strong { color: var(--cover-heading); font-size: 20px; }
+.cover-copy p { margin: 0; font-size: clamp(15px, 4vw, 19px); line-height: 1.25; font-weight: 600; }
+.cover-copy .invocation { margin-top: 4px; font-size: clamp(13px, 3.4vw, 16px); }
+.cover-copy .dedication { font-style: italic; font-weight: 500; margin-top: 16px; text-wrap: balance; }
+.cover-copy .hosts strong { color: var(--cover-heading); }
 .cover h1 {
   display: grid;
-  gap: 5px;
-  margin: 24px 0 16px;
+  gap: 6px;
+  margin: 10px 0;
   color: var(--cover-heading);
-  font-family: var(--script);
-  font-size: clamp(34px, 10vw, 56px);
-  line-height: 1.24;
-  font-weight: 400;
-}
-.cover h1 i { color: var(--cover-accent); font-size: .66em; font-weight: 400; }
-.cover-copy .groom-parents { font-size: 16px; }
-.scroll-cue {
-  display: inline-grid;
-  justify-items: center;
-  gap: 3px;
-  margin-top: 6px;
-  padding: 7px 12px;
-  color: var(--cover-heading);
-  font-size: 16px;
+  font-family: var(--display-font);
+  font-size: clamp(23px, 7.3vw, 39px);
+  line-height: 1.13;
   font-weight: 600;
-  text-decoration: none;
 }
-.scroll-cue svg { animation: bob 1.8s ease-in-out infinite; }
-@keyframes bob { 50% { transform: translateY(5px); } }
+.cover h1 i { color: var(--cover-accent); font: 600 .68em/1 'Cormorant Garamond', Georgia, serif; }
+.cover-copy .groom-parents { font-size: clamp(13px, 3.6vw, 16px); }
 
 .welcome {
   position: relative;
