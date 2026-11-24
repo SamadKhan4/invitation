@@ -5,6 +5,7 @@ import { CalendarDays, Drum, Flower2, Gift, Heart, MapPin, Utensils, Volume2, Vo
 import { wedding } from './config';
 import entranceVideo from '../hero-silent.mp4?url';
 import weddingSong from '../song.mpeg?url';
+import couplePortrait from '../couple.JPG?url';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -294,46 +295,6 @@ function EventDetails() {
   );
 }
 
-function MessageForm() {
-  const [status, setStatus] = useState('');
-
-  function submit(event) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const fields = new FormData(form);
-    const name = fields.get('name').trim();
-    const message = fields.get('message').trim();
-    if (!name || !message) {
-      setStatus('Please enter your name and a message.');
-      return;
-    }
-
-    try {
-      const wishes = JSON.parse(localStorage.getItem('wedding-wishes') || '[]');
-      wishes.push({ name, message, createdAt: new Date().toISOString() });
-      localStorage.setItem('wedding-wishes', JSON.stringify(wishes));
-      form.reset();
-      setStatus('Your wish was saved on this device. Thank you!');
-    } catch {
-      setStatus('Your wish could not be saved. Please try again.');
-    }
-  }
-
-  return (
-    <section className="section" id="message">
-      <Heading icon={Heart}>Send a Message</Heading>
-      <form className="message-form" onSubmit={submit}>
-        <label htmlFor="guest-name">Your name</label>
-        <input id="guest-name" name="name" required maxLength={80} autoComplete="name" />
-        <label htmlFor="guest-message">Your message</label>
-        <textarea id="guest-message" name="message" required maxLength={1200} rows={5} />
-        <button className="primary-button">Save Wishes</button>
-        <p role="status">{status}</p>
-      </form>
-    </section>
-  );
-}
-
 export default function App() {
   const [phase, setPhase] = useState('closed');
   const invitation = useRef(null);
@@ -414,7 +375,18 @@ export default function App() {
         <Timeline />
         <Countdown />
         <EventDetails />
-        <MessageForm />
+        <div className="section couple-portrait">
+          <figure className="couple-frame">
+            <img
+              src={couplePortrait}
+              alt={`${wedding.partner1} and ${wedding.partner2} together`}
+              width={4480}
+              height={6720}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        </div>
         <section className="farewell">
           <Heading accent={wedding.farewellAccent} lang="hi">We can’t wait to celebrate with you!</Heading>
           <p>{wedding.partner1} &amp; {wedding.partner2}</p>

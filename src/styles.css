@@ -361,21 +361,24 @@ h2 {
 .primary-button:hover { translate: 0 -2px; background: #75221d; }
 .primary-button:active { translate: 0 2px; }
 
-.message-form { display: grid; gap: 8px; max-width: 370px; margin-inline: auto; text-align: left; }
-.message-form label { color: #743f50; font-size: 17px; }
-.message-form input, .message-form textarea {
-  width: 100%;
-  margin-bottom: 12px;
-  border: 1px solid #e2c5ce;
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: inherit;
-  background: #fffdfd;
-  box-shadow: inset 0 2px 5px #6f3d2920, 0 1px 0 #fff;
-  font: 400 16px/1.5 'DM Sans', sans-serif;
+.couple-portrait {
+  padding-block: 38px 48px;
+  background: radial-gradient(ellipse at center, #f6e5c7, var(--paper) 75%);
 }
-.message-form textarea { resize: vertical; }
-.message-form [role='status'] { text-align: center; margin: 0 auto; }
+.couple-frame {
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 9px;
+  border: 3px double #b88643;
+  border-radius: 18px;
+  background: #fff9ed;
+  box-shadow: 0 9px 24px #754b262b;
+}
+.couple-frame img {
+  width: 100%;
+  height: auto;
+  border-radius: 9px;
+}
 .farewell { background: #f7e7ce; }
 .farewell p { margin: 0; font: 400 27px/1.2 var(--script); color: var(--rose); }
 footer { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 25px; color: var(--rose); }
