@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { wedding } from "./config";
 import entranceVideo from "../hero-silent.mp4?url";
-import weddingSong from "../song.mpeg?url";
+import weddingSong from "../song-quiet.mp3?url";
 import couplePortrait from "../couple.webp?url";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -399,7 +399,6 @@ export default function App() {
   const [loadVideo, setLoadVideo] = useState(false);
 
   function openGate() {
-    music.current.volume = 0.06;
     music.current.play().catch(() => setMusicPlaying(false));
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
