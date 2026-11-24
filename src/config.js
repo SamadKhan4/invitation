@@ -16,8 +16,6 @@ export const wedding = {
   address: 'Kamptee Road, near Raj Royal Lawns, Nagpur',
   mapUrl: 'https://www.google.com/maps/search/?api=1&query=Ghotra+Palace+Kamptee+Road+near+Raj+Royal+Lawns+Nagpur',
   events: [
-    { id: 'mehndi', name: 'Mehndi', dateTime: '2027-01-26T11:00:00+05:30', dateLabel: 'Tuesday, 26 January 2027', detail: '11:00 AM' },
-    { id: 'sangeet', name: 'Sangeet', dateTime: '2027-01-26T19:00:00+05:30', dateLabel: 'Tuesday, 26 January 2027', detail: '7:00 PM' },
     { id: 'wedding', name: 'Wedding Ceremony', dateTime: '2027-01-27T18:00:00+05:30', dateLabel: 'Wednesday, 27 January 2027', detail: '6:00 PM sharp' },
     { id: 'dinner', name: 'Dinner', detail: 'Dinner will be served immediately after the ceremony.' }
   ]

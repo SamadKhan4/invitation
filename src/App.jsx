@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CalendarDays, Drum, Flower2, Gift, Heart, MapPin, Utensils, Volume2, VolumeX } from 'lucide-react';
+import { CalendarDays, Gift, Heart, MapPin, Utensils, Volume2, VolumeX } from 'lucide-react';
 import { wedding } from './config';
 import entranceVideo from '../hero-silent.mp4?url';
 import weddingSong from '../song.mpeg?url';
-import couplePortrait from '../couple.JPG?url';
+import couplePortrait from '../couple.webp?url';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -227,7 +227,7 @@ function Countdown() {
   );
 }
 
-const eventIcons = { mehndi: Flower2, sangeet: Drum, wedding: CalendarDays, dinner: Utensils };
+const eventIcons = { wedding: CalendarDays, dinner: Utensils };
 
 function Timeline() {
   return (
@@ -303,6 +303,7 @@ export default function App() {
   const [loadVideo, setLoadVideo] = useState(false);
 
   function openGate() {
+    music.current.volume = 0.4;
     music.current.play().catch(() => setMusicPlaying(false));
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setLoadVideo(!reducedMotion);
@@ -380,8 +381,8 @@ export default function App() {
             <img
               src={couplePortrait}
               alt={`${wedding.partner1} and ${wedding.partner2} together`}
-              width={4480}
-              height={6720}
+              width={800}
+              height={1200}
               loading="lazy"
               decoding="async"
             />
