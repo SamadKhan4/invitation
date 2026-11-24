@@ -305,7 +305,21 @@ h2 {
 .countdown-grid span { font-size: 14px; }
 
 .timeline { position: relative; margin: 0 auto; max-width: 380px; padding: 0 0 0 17px; list-style: none; text-align: left; }
-.timeline::before { position: absolute; inset: 28px auto 28px 5px; width: 1px; background: #c6a36a; content: ''; }
+.timeline::before {
+  position: absolute;
+  inset: 28px auto 28px 5px;
+  width: 1px;
+  background: #c6a36a;
+  transform-origin: top;
+  content: '';
+}
+@media (prefers-reduced-motion: no-preference) {
+  .timeline--revealed::before { animation: timeline-draw .45s linear; }
+  .timeline--revealed > li { animation: timeline-card-in .32s ease-out both; }
+  .timeline--revealed > li + li { animation-delay: .45s; }
+}
+@keyframes timeline-draw { from { transform: scaleY(0); } }
+@keyframes timeline-card-in { from { opacity: 0; transform: translateX(12px); } }
 .timeline li {
   display: grid;
   grid-template-columns: 34px 1fr;
@@ -366,6 +380,7 @@ h2 {
   background: radial-gradient(ellipse at center, #f6e5c7, var(--paper) 75%);
 }
 .couple-frame {
+  position: relative;
   max-width: 360px;
   margin: 0 auto;
   padding: 9px;
@@ -378,6 +393,52 @@ h2 {
   width: 100%;
   height: auto;
   border-radius: 9px;
+}
+.portrait-petals { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .couple-frame { border-color: transparent; }
+  .couple-frame::before {
+    position: absolute;
+    inset: -3px;
+    border: 3px double #b88643;
+    border-radius: inherit;
+    clip-path: inset(0 50% 0 50%);
+    pointer-events: none;
+    content: '';
+  }
+  .couple-frame img { opacity: 0; }
+  .couple-frame--revealed::before { animation: portrait-border .65s ease-out both; }
+  .couple-frame--revealed img { animation: portrait-photo .65s .25s ease-out both; }
+  .portrait-petals {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+  }
+  .portrait-petals i {
+    position: absolute;
+    top: 4px;
+    left: var(--petal-left, 8%);
+    width: 10px;
+    height: 15px;
+    border-radius: 75% 20% 65% 35%;
+    background: linear-gradient(145deg, #ea9ba1, #a83251);
+    opacity: 0;
+  }
+  .portrait-petals i:nth-child(2) { --petal-left: 91%; --petal-drift: -18px; --petal-delay: .24s; }
+  .portrait-petals i:nth-child(3) { --petal-left: 96%; --petal-drift: -8px; --petal-delay: .34s; }
+  .couple-frame--revealed .portrait-petals i {
+    animation: portrait-petal .65s var(--petal-delay, .15s) ease-out both;
+  }
+}
+
+@keyframes portrait-border { to { clip-path: inset(0); } }
+@keyframes portrait-photo { to { opacity: 1; } }
+@keyframes portrait-petal {
+  from { transform: translateY(-26px) rotate(-38deg); }
+  to { opacity: .9; transform: translate(var(--petal-drift, 8px), 34px) rotate(60deg); }
 }
 .farewell { background: #f7e7ce; }
 .farewell p { margin: 0; font: 400 27px/1.2 var(--script); color: var(--rose); }

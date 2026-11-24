@@ -324,8 +324,8 @@ export default function App() {
       invitation.current.focus({ preventScroll: true });
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const animations = gsap.context(() => {
-        gsap.utils.toArray('.section, .farewell').forEach(section => {
-          gsap.from(section.children, {
+          gsap.utils.toArray('.section:not(.couple-portrait), .farewell').forEach(section => {
+            gsap.from(Array.from(section.children).filter(child => !child.matches('.timeline')), {
             autoAlpha: 0,
             y: 24,
             rotateX: -7,
@@ -335,6 +335,18 @@ export default function App() {
             ease: 'power2.out',
             stagger: .055,
             scrollTrigger: { trigger: section, start: 'top 94%', once: true },
+          });
+          ScrollTrigger.create({
+            trigger: '.timeline',
+            start: 'top 100%',
+            once: true,
+            onEnter: ({ trigger }) => trigger.classList.add('timeline--revealed'),
+          });
+          ScrollTrigger.create({
+            trigger: '.couple-frame',
+            start: 'top 83%',
+            once: true,
+            onEnter: ({ trigger }) => trigger.classList.add('couple-frame--revealed'),
           });
         });
       }, invitation.current);
@@ -378,6 +390,7 @@ export default function App() {
         <EventDetails />
         <div className="section couple-portrait">
           <figure className="couple-frame">
+            <span className="portrait-petals" aria-hidden="true"><i /><i /><i /></span>
             <img
               src={couplePortrait}
               alt={`${wedding.partner1} and ${wedding.partner2} together`}
