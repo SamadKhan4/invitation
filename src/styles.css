@@ -10,6 +10,8 @@
   --display-font: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
   --raised-shadow: inset 0 1px 1px #fffaf3, 0 3px 0 #c3a173, 0 10px 20px #754b2625;
   --script: 'Great Vibes', 'Brush Script MT', cursive;
+  --wedding-textile: url('./wedding-textile.webp');
+  --ease-reveal: cubic-bezier(.22, .82, .25, 1);
 }
 
 * { box-sizing: border-box; }
@@ -129,8 +131,8 @@ main:focus { outline: none; }
   display: grid;
   justify-items: center;
   align-content: center;
-  min-height: 100svh;
-  padding: clamp(45px, 12svh, 105px) 9% clamp(110px, 28svh, 245px);
+  min-height: min(100svh, 740px);
+  padding: clamp(72px, 17svh, 132px) 7% clamp(70px, 19svh, 148px);
   text-align: center;
   background: var(--welcome-surface);
 }
@@ -170,18 +172,35 @@ main:focus { outline: none; }
   color: var(--cover-accent);
 }
 .invitation:not(.invitation--open) .cover-copy { visibility: hidden; }
-.invitation--open .cover-copy > * { animation: invitation-reveal 1.55s 1s ease-in-out both; }
-.invitation--open .cover-copy > :nth-child(n + 3) { animation-delay: 1.15s; }
-.invitation--open .cover-copy > :nth-child(n + 5) { animation-delay: 1.3s; }
-.invitation--open .cover-copy > :last-child { animation-delay: 1.45s; }
+.invitation--open .cover-copy > * { animation: invitation-reveal .86s var(--ease-reveal) both; }
+.invitation--open .cover-copy > :nth-child(n + 3) { animation-delay: .07s; }
+.invitation--open .cover-copy > :nth-child(n + 5) { animation-delay: .14s; }
+.invitation--open .cover-copy > :last-child { animation-delay: .21s; }
 @keyframes invitation-reveal {
-  from { visibility: hidden; opacity: 0; }
-  to { visibility: visible; opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
 }
 .cover-copy p { margin: 0; font-size: clamp(15px, 4vw, 19px); line-height: 1.25; font-weight: 600; }
 .cover-copy .invocation { margin-top: 4px; font-size: clamp(13px, 3.4vw, 16px); }
 .cover-copy .dedication { font-style: italic; font-weight: 500; margin-top: 16px; text-wrap: balance; }
 .cover-copy .hosts strong { color: var(--cover-heading); }
+.cover-copy .cover-traditions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  margin: 20px auto 0;
+  color: var(--cover-accent);
+  font-size: clamp(13px, 3.5vw, 16px);
+  line-height: 1.6;
+}
+.cover-traditions span[aria-hidden] { font-size: 7px; }
+.cover-date {
+  display: block;
+  color: var(--cover-heading);
+  font: 600 clamp(10px, 2.8vw, 12px)/1.5 'DM Sans', sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
 .cover h1 {
   display: grid;
   gap: 6px;
@@ -314,12 +333,12 @@ h2 {
   content: '';
 }
 @media (prefers-reduced-motion: no-preference) {
-  .timeline--revealed::before { animation: timeline-draw .45s linear; }
-  .timeline--revealed > li { animation: timeline-card-in .32s ease-out both; }
-  .timeline--revealed > li + li { animation-delay: .45s; }
+  .timeline--revealed::before { animation: timeline-draw .75s var(--ease-reveal); }
+  .timeline--revealed > li { animation: timeline-card-in .64s var(--ease-reveal) both; }
+  .timeline--revealed > li + li { animation-delay: .11s; }
 }
 @keyframes timeline-draw { from { transform: scaleY(0); } }
-@keyframes timeline-card-in { from { opacity: 0; transform: translateX(12px); } }
+@keyframes timeline-card-in { from { opacity: .25; transform: translateY(10px); } }
 .timeline li {
   display: grid;
   grid-template-columns: 34px 1fr;
@@ -376,71 +395,62 @@ h2 {
 .primary-button:active { translate: 0 2px; }
 
 .couple-portrait {
-  padding-block: 38px 48px;
-  background: radial-gradient(ellipse at center, #f6e5c7, var(--paper) 75%);
+  position: relative;
+  isolation: isolate;
+  padding: clamp(46px, 12vw, 66px) 0 4px;
+  background:
+    radial-gradient(ellipse at 50% 42%, #f4d7ab 0%, transparent 72%),
+    linear-gradient(#f7e3dd, var(--paper));
+}
+.couple-portrait::before {
+  position: absolute;
+  z-index: -1;
+  inset: 12px 5.5% 57px;
+  border: 3px double #d0a45c;
+  border-radius: 49% 49% 24px 24px / 26% 26% 24px 24px;
+  background: #65152b var(--wedding-textile) center / cover no-repeat;
+  box-shadow: 0 14px 30px #64202c30;
+  content: '';
 }
 .couple-frame {
-  position: relative;
-  max-width: 360px;
+  overflow: hidden;
+  width: min(66%, 335px);
   margin: 0 auto;
-  padding: 9px;
-  border: 3px double #b88643;
-  border-radius: 18px;
-  background: #fff9ed;
-  box-shadow: 0 9px 24px #754b262b;
+  padding: clamp(5px, 1.6vw, 9px);
+  border: 1px solid #ffe6ad;
+  border-radius: 48% 48% 14px 14px / 25% 25% 14px 14px;
+  background: linear-gradient(145deg, #fff3cc, #b78135 54%, #fce6b2);
+  box-shadow: 0 0 0 2px #6b2635, 0 12px 26px #290c15a1;
 }
 .couple-frame img {
   width: 100%;
   height: auto;
-  border-radius: 9px;
+  border-radius: 48% 48% 8px 8px / 24% 24% 8px 8px;
 }
-.portrait-petals { display: none; }
+.couple-portrait .divider {
+  margin: 23px auto 0;
+}
+.couple-portrait .divider::before,
+.couple-portrait .divider::after {
+  width: 42px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  .couple-frame { border-color: transparent; }
-  .couple-frame::before {
-    position: absolute;
-    inset: -3px;
-    border: 3px double #b88643;
-    border-radius: inherit;
-    clip-path: inset(0 50% 0 50%);
-    pointer-events: none;
-    content: '';
-  }
-  .couple-frame img { opacity: 0; }
-  .couple-frame--revealed::before { animation: portrait-border .65s ease-out both; }
-  .couple-frame--revealed img { animation: portrait-photo .65s .25s ease-out both; }
-  .portrait-petals {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    display: block;
-    pointer-events: none;
-  }
-  .portrait-petals i {
-    position: absolute;
-    top: 4px;
-    left: var(--petal-left, 8%);
-    width: 10px;
-    height: 15px;
-    border-radius: 75% 20% 65% 35%;
-    background: linear-gradient(145deg, #ea9ba1, #a83251);
-    opacity: 0;
-  }
-  .portrait-petals i:nth-child(2) { --petal-left: 91%; --petal-drift: -18px; --petal-delay: .24s; }
-  .portrait-petals i:nth-child(3) { --petal-left: 96%; --petal-drift: -8px; --petal-delay: .34s; }
-  .couple-frame--revealed .portrait-petals i {
-    animation: portrait-petal .65s var(--petal-delay, .15s) ease-out both;
-  }
+  .couple-portrait--revealed::before { animation: textile-reveal .95s var(--ease-reveal) both; }
+  .couple-portrait--revealed .couple-frame { animation: portrait-reveal 1s .09s var(--ease-reveal) both; }
+  .couple-portrait--revealed .couple-frame img { animation: portrait-focus 1.15s .09s var(--ease-reveal) both; }
+  .couple-portrait--revealed .divider { animation: textile-reveal .65s .27s var(--ease-reveal) both; }
 }
 
-@keyframes portrait-border { to { clip-path: inset(0); } }
-@keyframes portrait-photo { to { opacity: 1; } }
-@keyframes portrait-petal {
-  from { transform: translateY(-26px) rotate(-38deg); }
-  to { opacity: .9; transform: translate(var(--petal-drift, 8px), 34px) rotate(60deg); }
+@keyframes textile-reveal { from { transform: translateY(12px) scale(.98); opacity: .35; } }
+@keyframes portrait-reveal { from { transform: translateY(20px) scale(.97); opacity: .45; } }
+@keyframes portrait-focus { from { transform: scale(1.065); } }
+.celebrations { padding-top: 42px; }
+.farewell {
+  background:
+    var(--wedding-textile) center bottom / 100% 12px no-repeat,
+    linear-gradient(180deg, #f7e7ce, #f3dac2);
 }
-.farewell { background: #f7e7ce; }
 .farewell p { margin: 0; font: 400 27px/1.2 var(--script); color: var(--rose); }
 footer { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 25px; color: var(--rose); }
 
@@ -456,10 +466,10 @@ footer { display: flex; align-items: center; justify-content: center; gap: 8px; 
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
-.section-accent:lang(hi), .invocation:lang(hi) {
+.section-accent:lang(mr), .cover-traditions :lang(mr) {
   font-family: 'Noto Serif Devanagari', 'Nirmala UI', Mangal, serif;
 }
-.section-accent:lang(gu) {
+.section-accent:lang(gu), .cover-traditions :lang(gu) {
   font-family: 'Noto Serif Gujarati', 'Nirmala UI', Shruti, serif;
 }
 .cover-copy .section-accent, .section .section-accent, .farewell .section-accent {

@@ -104,9 +104,11 @@ function Cover({ playing, loadVideo }) {
           <br />
           of our beloved daughter
         </p>
-        <div className="divider" aria-hidden="true">
-          <span>✦</span>
-        </div>
+        <p className="cover-traditions">
+          <span lang="mr">शुभ विवाह</span>
+          <span aria-hidden="true">◆</span>
+          <span lang="gu">શુભ લગ્ન</span>
+        </p>
         <h1>
           <span>{wedding.bride}</span>
           <i>&amp;</i>
@@ -116,6 +118,9 @@ function Cover({ playing, loadVideo }) {
         <div className="divider" aria-hidden="true">
           <span>✦</span>
         </div>
+        <time className="cover-date" dateTime={wedding.date}>
+          {wedding.dateLabel}
+        </time>
       </div>
     </header>
   );
@@ -422,43 +427,39 @@ export default function App() {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const animations = gsap.context(() => {
         gsap.utils
-          .toArray(".section:not(.couple-portrait), .farewell")
+          .toArray(".section, .farewell")
           .forEach((section) => {
             gsap.from(
               Array.from(section.children).filter(
                 (child) => !child.matches(".timeline"),
               ),
               {
-                autoAlpha: 0,
-                y: 24,
-                rotateX: -7,
-                transformPerspective: 900,
-                transformOrigin: "50% 80%",
-                duration: 0.78,
-                ease: "power2.out",
-                stagger: 0.055,
+                opacity: 0.2,
+                y: 12,
+                duration: 0.62,
+                ease: "power3.out",
+                stagger: 0.04,
+                clearProps: "opacity,transform",
                 scrollTrigger: {
                   trigger: section,
-                  start: "top 94%",
+                  start: "top 96%",
                   once: true,
                 },
               },
             );
-            ScrollTrigger.create({
-              trigger: ".timeline",
-              start: "top 100%",
-              once: true,
-              onEnter: ({ trigger }) =>
-                trigger.classList.add("timeline--revealed"),
-            });
-            ScrollTrigger.create({
-              trigger: ".couple-frame",
-              start: "top 83%",
-              once: true,
-              onEnter: ({ trigger }) =>
-                trigger.classList.add("couple-frame--revealed"),
-            });
           });
+        ScrollTrigger.create({
+          trigger: ".timeline",
+          start: "top 100%",
+          once: true,
+          onEnter: ({ trigger }) => trigger.classList.add("timeline--revealed"),
+        });
+        ScrollTrigger.create({
+          trigger: ".couple-portrait",
+          start: "top 90%",
+          once: true,
+          onEnter: ({ trigger }) => trigger.classList.add("couple-portrait--revealed"),
+        });
       }, invitation.current);
       return () => animations.revert();
     }
@@ -522,16 +523,8 @@ export default function App() {
             blessings to make this celebration truly memorable.
           </p>
         </section>
-        <Timeline />
-        <Countdown />
-        <EventDetails />
-        <div className="section couple-portrait">
+        <div className="couple-portrait">
           <figure className="couple-frame">
-            <span className="portrait-petals" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
             <img
               src={couplePortrait}
               alt={`${wedding.partner1} and ${wedding.partner2} together`}
@@ -541,9 +534,15 @@ export default function App() {
               decoding="async"
             />
           </figure>
+          <div className="divider" aria-hidden="true">
+            <span>✦</span>
+          </div>
         </div>
+        <Timeline />
+        <Countdown />
+        <EventDetails />
         <section className="farewell">
-          <Heading accent={wedding.farewellAccent} lang="hi">
+          <Heading accent={wedding.farewellAccent} lang="mr">
             We can’t wait to celebrate with you!
           </Heading>
           <p>
