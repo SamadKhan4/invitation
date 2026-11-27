@@ -27,7 +27,12 @@ function Petals({ className = "" }) {
       {Array.from({ length: 16 }, (_, i) => (
         <i
           key={i}
-          style={{ "--x": `${(i * 37) % 100}%`, "--delay": `${i * 42}ms` }}
+          style={{
+            "--x": `${(i * 37) % 100}%`,
+            "--delay": `${i * 55}ms`,
+            "--drift": `${(i % 5 - 2) * 19}px`,
+            "--turn": `${i % 2 === 0 ? 260 : -260}deg`,
+          }}
         />
       ))}
     </div>
@@ -60,6 +65,91 @@ function PalaceGate({ opening, onOpen }) {
         </span>
         <span className="gate-prompt" aria-hidden="true">Tap to open</span>
       </button>
+    </div>
+  );
+}
+
+function CalendarShortcuts() {
+  const [motionPermission, setMotionPermission] = useState("idle");
+  const supportsMotion = window.isSecureContext && Boolean(window.DeviceMotionEvent);
+  const needsPermission = typeof window.DeviceMotionEvent?.requestPermission === "function";
+  const shakeEnabled = supportsMotion && (!needsPermission || motionPermission === "granted");
+
+  async function enableShake() {
+    setMotionPermission("pending");
+    try {
+      setMotionPermission(await window.DeviceMotionEvent.requestPermission());
+    } catch {
+      setMotionPermission("denied");
+    }
+  }
+
+  useEffect(() => {
+    function showCalendar() {
+      const button = document.getElementById("add-to-calendar");
+      button.focus({ preventScroll: true });
+      button.scrollIntoView({ block: "center" });
+    }
+
+    function handleKey(event) {
+      if (
+        event.defaultPrevented || event.repeat || event.isComposing ||
+        event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
+        event.key.toLowerCase() !== "b" ||
+        event.target.closest?.("input, textarea, select, [contenteditable], [role='textbox']")
+      ) return;
+      showCalendar();
+    }
+
+    let previousSpike = -Infinity;
+    let lastShake = -Infinity;
+    function handleMotion(event) {
+      if (document.hidden) return;
+      const linear = event.acceleration;
+      const hasLinear = [linear?.x, linear?.y, linear?.z].every(Number.isFinite);
+      const reading = hasLinear ? linear : event.accelerationIncludingGravity;
+      if (!reading || ![reading.x, reading.y, reading.z].every(Number.isFinite)) return;
+
+      const magnitude = Math.hypot(reading.x, reading.y, reading.z);
+      const force = hasLinear ? magnitude : Math.abs(magnitude - 9.81);
+      const now = performance.now();
+      const sinceSpike = now - previousSpike;
+      if (force < 13 || sinceSpike < 90 || now - lastShake < 2500) return;
+      if (sinceSpike <= 500) {
+        lastShake = now;
+        previousSpike = -Infinity;
+        showCalendar();
+      } else {
+        previousSpike = now;
+      }
+    }
+
+    window.addEventListener("keydown", handleKey);
+    const listenForShake = shakeEnabled && window.matchMedia("(any-pointer: coarse)").matches;
+    if (listenForShake) window.addEventListener("devicemotion", handleMotion);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("devicemotion", handleMotion);
+    };
+  }, [shakeEnabled]);
+
+  return (
+    <div className="calendar-shortcuts">
+      <span className="keyboard-calendar-hint">Press <kbd>B</kbd> to find the calendar</span>
+      {supportsMotion && (
+        <div className="shake-calendar-hint">
+          {shakeEnabled ? (
+            <span>Shake your phone to find the calendar</span>
+          ) : motionPermission === "denied" ? (
+            <a href="#add-to-calendar">Go to Add to Calendar</a>
+          ) : (
+            <button type="button" className="text-button" onClick={enableShake}
+              disabled={motionPermission === "pending"}>
+              Enable shake shortcut
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -125,6 +215,7 @@ function Cover({ playing, loadVideo }) {
           Discover the invitation
           <ChevronDown size={18} aria-hidden="true" />
         </a>
+        {playing && <CalendarShortcuts />}
       </div>
     </header>
   );
@@ -232,7 +323,7 @@ function ScratchHeart() {
         {revealed && <Petals />}
         <div
           ref={message}
-          className="heart-message"
+          className={`heart-message${revealed ? " heart-message--revealed" : ""}`}
           tabIndex={-1}
           aria-hidden={!revealed}
         >
@@ -383,6 +474,8 @@ function EventDetails() {
           </a>
           <button
             className="primary-button outline-button"
+            id="add-to-calendar"
+            aria-keyshortcuts="B"
             onClick={downloadCalendar}
           >
             Add to Calendar
@@ -433,21 +526,25 @@ export default function App() {
         gsap.utils
           .toArray(".section, .farewell")
           .forEach((section) => {
+            const children = Array.from(section.children).flatMap((child) => {
+              if (child.matches(".timeline")) return [];
+              if (child.matches(".countdown-grid")) return Array.from(child.children);
+              return [child];
+            });
             gsap.from(
-              Array.from(section.children).filter(
-                (child) => !child.matches(".timeline"),
-              ),
+              children,
               {
                 opacity: 0.2,
-                y: 12,
-                duration: 0.62,
+                y: 22,
+                duration: 0.72,
                 ease: "power3.out",
-                stagger: 0.04,
+                stagger: 0.075,
                 clearProps: "opacity,transform",
                 scrollTrigger: {
                   trigger: section,
                   start: "top 96%",
                   once: true,
+                  onEnter: () => section.classList.add("section--revealed"),
                 },
               },
             );
