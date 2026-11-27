@@ -69,28 +69,16 @@ function PalaceGate({ opening, onOpen }) {
   );
 }
 
-function CalendarShortcuts() {
-  const [motionPermission, setMotionPermission] = useState("idle");
+function openCalendarInvite() {
+  document.getElementById("add-to-calendar")?.click();
+}
+
+function CalendarShortcuts({ motionPermission, enableShake }) {
   const supportsMotion = window.isSecureContext && Boolean(window.DeviceMotionEvent);
   const needsPermission = typeof window.DeviceMotionEvent?.requestPermission === "function";
   const shakeEnabled = supportsMotion && (!needsPermission || motionPermission === "granted");
 
-  async function enableShake() {
-    setMotionPermission("pending");
-    try {
-      setMotionPermission(await window.DeviceMotionEvent.requestPermission());
-    } catch {
-      setMotionPermission("denied");
-    }
-  }
-
   useEffect(() => {
-    function showCalendar() {
-      const button = document.getElementById("add-to-calendar");
-      button.focus({ preventScroll: true });
-      button.scrollIntoView({ block: "center" });
-    }
-
     function handleKey(event) {
       if (
         event.defaultPrevented || event.repeat || event.isComposing ||
@@ -98,7 +86,7 @@ function CalendarShortcuts() {
         event.key.toLowerCase() !== "b" ||
         event.target.closest?.("input, textarea, select, [contenteditable], [role='textbox']")
       ) return;
-      showCalendar();
+      openCalendarInvite();
     }
 
     let previousSpike = -Infinity;
@@ -118,7 +106,7 @@ function CalendarShortcuts() {
       if (sinceSpike <= 500) {
         lastShake = now;
         previousSpike = -Infinity;
-        showCalendar();
+        openCalendarInvite();
       } else {
         previousSpike = now;
       }
@@ -135,13 +123,15 @@ function CalendarShortcuts() {
 
   return (
     <div className="calendar-shortcuts">
-      <span className="keyboard-calendar-hint">Press <kbd>B</kbd> to find the calendar</span>
+      <span className="keyboard-calendar-hint">Press <kbd>B</kbd> to open the calendar invite</span>
       {supportsMotion && (
         <div className="shake-calendar-hint">
           {shakeEnabled ? (
-            <span>Shake your phone to find the calendar</span>
+            <span>Shake your phone to open the calendar invite</span>
           ) : motionPermission === "denied" ? (
-            <a href="#add-to-calendar">Go to Add to Calendar</a>
+            <button type="button" className="text-button" onClick={openCalendarInvite}>
+              Open calendar invite
+            </button>
           ) : (
             <button type="button" className="text-button" onClick={enableShake}
               disabled={motionPermission === "pending"}>
@@ -154,7 +144,7 @@ function CalendarShortcuts() {
   );
 }
 
-function Cover({ playing, loadVideo }) {
+function Cover({ playing, loadVideo, motionPermission, enableShake }) {
   const video = useRef(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const showVideo = loadVideo && !videoFailed;
@@ -215,7 +205,9 @@ function Cover({ playing, loadVideo }) {
           Discover the invitation
           <ChevronDown size={18} aria-hidden="true" />
         </a>
-        {playing && <CalendarShortcuts />}
+        {playing && (
+          <CalendarShortcuts motionPermission={motionPermission} enableShake={enableShake} />
+        )}
       </div>
     </header>
   );
@@ -499,9 +491,26 @@ export default function App() {
   const music = useRef(null);
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [loadVideo, setLoadVideo] = useState(false);
+  const [motionPermission, setMotionPermission] = useState("idle");
+
+  async function enableShake() {
+    if (
+      !window.isSecureContext ||
+      !window.matchMedia("(any-pointer: coarse)").matches ||
+      typeof window.DeviceMotionEvent?.requestPermission !== "function"
+    ) return;
+
+    setMotionPermission("pending");
+    try {
+      setMotionPermission(await window.DeviceMotionEvent.requestPermission());
+    } catch {
+      setMotionPermission("denied");
+    }
+  }
 
   function openGate() {
     music.current.play().catch(() => setMusicPlaying(false));
+    enableShake();
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -609,7 +618,12 @@ export default function App() {
         tabIndex={-1}
         inert={phase === "open" ? undefined : ""}
       >
-        <Cover playing={phase === "open"} loadVideo={loadVideo} />
+        <Cover
+          playing={phase === "open"}
+          loadVideo={loadVideo}
+          motionPermission={motionPermission}
+          enableShake={enableShake}
+        />
         {phase === "open" && <Petals className="entrance-petals" />}
         <ScratchHeart />
         <section className="welcome section">
