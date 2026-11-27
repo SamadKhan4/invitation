@@ -114,6 +114,19 @@ main:focus { outline: none; }
 }
 .gate-monogram:focus-visible { outline-color: #fff4d5; }
 .gate-monogram:active { scale: .96; }
+.gate-prompt {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 0;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #32170e;
+  color: #fff0ce;
+  font: 600 12px/1.4 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
 .palace-gate--opening { animation: gate-fade .56s .88s both; pointer-events: none; }
 .palace-gate--opening .gate-left { animation: gate-left 1.1s .1s cubic-bezier(.5,.12,.21,1) both; }
 .palace-gate--opening .gate-right { animation: gate-right 1.1s .1s cubic-bezier(.5,.12,.21,1) both; }
@@ -180,9 +193,38 @@ main:focus { outline: none; }
   from { opacity: 0; transform: translateY(10px); }
 }
 .cover-copy p { margin: 0; font-size: clamp(15px, 4vw, 19px); line-height: 1.25; font-weight: 600; }
-.cover-copy .invocation { margin-top: 4px; font-size: clamp(13px, 3.4vw, 16px); }
+.cover-copy .invocation {
+  margin-top: 4px;
+  color: #855010;
+  font: 700 clamp(32px, 9vw, 53px)/1.35 'Noto Serif Devanagari', 'Nirmala UI', Mangal, serif;
+}
+@supports (background-clip: text) {
+  .cover-copy .invocation {
+    background: linear-gradient(170deg, #714009 12%, #ad6b13 36%, #b9832c 54%, #713907 79%);
+    background-clip: text;
+    color: transparent;
+  }
+}
+@media (forced-colors: active) {
+  .cover-copy .invocation { color: CanvasText; }
+}
 .cover-copy .dedication { font-style: italic; font-weight: 500; margin-top: 16px; text-wrap: balance; }
+.cover-copy .hosts { text-wrap: pretty; }
 .cover-copy .hosts strong { color: var(--cover-heading); }
+.cover-discover {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 12px;
+  border: 1px solid #b78b50;
+  border-radius: 999px;
+  background: #fff4df;
+  color: var(--cover-heading);
+  font: 600 12px/1.4 'DM Sans', sans-serif;
+  text-decoration: none;
+}
+.cover-discover:hover { background: #f4e0bb; }
 .cover-copy .cover-traditions {
   display: flex;
   justify-content: center;

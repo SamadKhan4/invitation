@@ -4,7 +4,7 @@ export const wedding = {
   partner2: 'Rutvik',
   bride: 'Dr. Upasana Patil',
   groom: 'Dr. Rutvik Kalasa',
-  hosts: 'Mrs. Pragati & Mr. Shuddhodhan Patil',
+  hosts: 'Mr. Shuddhodhan and Mrs. Pragati Patil',
   groomParents: 'S/o Smt. Kiranben and Shri Kishorbhai Kalasa',
   welcomeAccent: 'બે હૃદય, બે પરિવાર',
   celebrationAccent: 'શુભ લગ્નોત્સવ',

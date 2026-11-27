@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   CalendarDays,
+  ChevronDown,
   Gift,
   Heart,
   MapPin,
@@ -57,6 +58,7 @@ function PalaceGate({ opening, onOpen }) {
           <i>&amp;</i>
           {wedding.partner2[0]}
         </span>
+        <span className="gate-prompt" aria-hidden="true">Tap to open</span>
       </button>
     </div>
   );
@@ -89,7 +91,7 @@ function Cover({ playing, loadVideo }) {
         )}
       </div>
       <div className="cover-copy">
-        <p className="invocation">॥ Shree Ganeshaya Namah ॥</p>
+        <p className="invocation" lang="pi-Deva">अत्त दीपा भव</p>
         <p className="dedication">
           With the divine blessings of the Almighty and in loving memory of our
           beloved grandparents
@@ -98,11 +100,9 @@ function Cover({ playing, loadVideo }) {
           <span>✦</span>
         </div>
         <p className="hosts">
-          <strong>{wedding.hosts}</strong>
-          <br />
-          cordially invite you to the wedding ceremony
-          <br />
-          of our beloved daughter
+          With immense joy and affection, <strong>{wedding.hosts}</strong>{" "}
+          invite you to celebrate the wedding of their beloved daughter,{" "}
+          Dr. Upasana.
         </p>
         <p className="cover-traditions">
           <span lang="mr">शुभ विवाह</span>
@@ -121,6 +121,10 @@ function Cover({ playing, loadVideo }) {
         <time className="cover-date" dateTime={wedding.date}>
           {wedding.dateLabel}
         </time>
+        <a className="cover-discover" href="#surprise">
+          Discover the invitation
+          <ChevronDown size={18} aria-hidden="true" />
+        </a>
       </div>
     </header>
   );
@@ -222,7 +226,7 @@ function ScratchHeart() {
   }
 
   return (
-    <section className="section scratch" id="surprise">
+    <section className="section scratch" id="surprise" tabIndex={-1}>
       <Heading>{revealed ? "Our Forever Begins" : "Scratch to Reveal"}</Heading>
       <div className="scratch-heart">
         {revealed && <Petals />}
