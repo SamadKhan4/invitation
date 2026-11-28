@@ -34,6 +34,28 @@ img { display: block; max-width: 100%; }
 }
 main:focus { outline: none; }
 
+.sample-watermark {
+  position: fixed;
+  z-index: 3;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  display: grid;
+  place-items: center;
+  width: min(84vw, 78vh, 440px);
+  aspect-ratio: 1;
+  padding: clamp(12px, 5vmin, 28px);
+  border: 4px solid currentColor;
+  color: var(--rose);
+  background: #fff6e533;
+  opacity: .55;
+  font-size: clamp(20px, 9vmin, 56px);
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+}
+
 .music-toggle {
   position: fixed;
   z-index: 1;

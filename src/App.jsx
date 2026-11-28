@@ -587,6 +587,9 @@ export default function App() {
 
   return (
     <div className={`invitation ${phase === "open" ? "invitation--open" : ""}`}>
+      <div className="sample-watermark">
+        <span>Free Sample<br />Watermark</span>
+      </div>
       <audio
         ref={music}
         loop
